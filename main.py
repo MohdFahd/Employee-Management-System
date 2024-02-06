@@ -105,10 +105,10 @@ def getData(event):
     row = data["values"]
     
     name.set(row[1])
-    job.set(row[2])
-    gender.set(row[3])
-    age.set(row[4])
-    email.set(row[5])
+    age.set(row[2])
+    job.set(row[3])
+    email.set(row[4])
+    gender.set(row[5])
     mobile.set(row[6])
     txtAddress.delete('1.0', END)
     txtAddress.insert(END,row[7])
@@ -140,16 +140,19 @@ def delete():
     displayAll()
     
 def update():
-    db.update(row[0], name.get(), job.get(), gender.get(), age.get(), email.get(), mobile.get(), txtAddress.get('1.0', END))
-    clear()
-    displayAll()     
-    messagebox.showinfo("Success", "Record has been updated", parent=root)
+    if name.get() == "" or job.get() == "" or gender.get() == "" or age.get() == "" or email.get() == "" or mobile.get() == "" or txtAddress.get('1.0', END) == "":
+        messagebox.showerror("Error", "All fields are required", parent=root)
+    else:
+        db.update(row[0], name.get(), age.get(), job.get(), email.get(), gender.get(), mobile.get(), txtAddress.get('1.0', END))
+        clear()
+        displayAll()     
+        messagebox.showinfo("Success", "Record has been updated", parent=root)
 
 def add_employee():
     if name.get() == "" or job.get() == "" or gender.get() == "" or age.get() == "" or email.get() == "" or mobile.get() == "" or txtAddress.get('1.0', END) == "":
         messagebox.showerror("Error", "All fields are required", parent=root)
     else:
-        db.insert(name.get(), job.get(), gender.get(), age.get(), email.get(), mobile.get(), txtAddress.get('1.0', END))
+        db.insert(name.get(), age.get(), job.get(), email.get(), gender.get(), mobile.get(), txtAddress.get('1.0', END))
         messagebox.showinfo("Success", "Record has been inserted", parent=root)
         clear()
         displayAll()
@@ -164,7 +167,7 @@ btnDelete = Button(btnFrame, text="Delete", font=("times new roman", 15),command
 btnClear = Button(btnFrame, text="Clear", font=("times new roman", 15),command=clear, width=10,fg="white",bg='#f39c12').place(x=170 ,y=55 )
 
 # Table Frame
-table_frame = Frame(root, bg='green')
+table_frame = Frame(root, bg='#242b4f')
 table_frame.place(x=360, y=1, width=760, height=510)
 
 style = ttk.Style()
@@ -192,6 +195,8 @@ tv['show'] = 'headings'
 tv.bind("<ButtonRelease-1>", getData )
 
 displayAll()
+#Same place but with hrizontal view
 tv.pack()
 
+# keep window showing
 root.mainloop()
